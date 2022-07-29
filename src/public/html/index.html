@@ -20,15 +20,8 @@
 <body>
   <div id="map"></div>
   <script text="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=330eda03c756c0f1276a288a77fe5008"></script>
-  <!-- <script src="http://localhost:3000/javascript/index.js"></script> -->
-  <script>
-    const container = document.getElementById('map');
-    const options = {
-      center: new kakao.maps.LatLng(37.342331, 126.830149),
-      level: 3
-    };
-
-    const map = new kakao.maps.Map(container, options);
-  </script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/javascript/index.js"></script>
+  <script src="/javascript/socket.js"></script>
 </body>
 </html>
