@@ -10,20 +10,25 @@ kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
     destinationMarker.setMap(map);
   } else destinationMarker.setPosition(latlng);
   
-  if(!apiKey) return alert('api key 발급 실패');
-  if(!currentLocationMarker) return alert('현재 위치 불러오기 실패');
+  if(!currentLocationMarker) return aAlert('위치 실패/현재 위치 불러오기 실패');
   
   const currentPosition = currentLocationMarker.getPosition();
 
-  const xhr = new XMLHttpRequest();
-  const url = `https://api.odsay.com/v1/api/searchPubTransPath?SX=${currentPosition.getLng()}&SY=${currentPosition.getLat()}&EX=${latlng.getLng()}&EY=${latlng.getLat()}&apiKey=${apiKey}`;
-  xhr.open('GET', url);
-  xhr.onreadystatechange = () => {
-    if(xhr.readyState === 4 && xhr.status === 200) {
-      const data = JSON.parse(xhr.responseText);
-      if(data.error) return alert(data.error.msg);
-      callMapObjApiAJAX(data['result']['path'][0].info.mapObj);
-    }
-  }
-  xhr.send();
+  fetch('/api/searchTransPath', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      SX: currentPosition.getLng(),
+      SY: currentPosition.getLat(),
+      EX: latlng.getLng(),
+      EY: latlng.getLat(),
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.data.error) return aAlert(`오류/${data.data.error.msg}`);
+    callMapObjApiAJAX(data.data['result']['path'][0].info.mapObj);
+  }).catch(err => aAlert(`오류/${err}`));
 });

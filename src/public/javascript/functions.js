@@ -34,15 +34,18 @@ function drawPolyLine(data) {
   }
 }
 
-function callMapObjApiAJAX(mabObj) {
-  const xhr = new XMLHttpRequest();
-  const url = `https://api.odsay.com/v1/api/loadLane?mapObject=0:0@${mabObj}&apiKey=${apiKey}`;
-  xhr.open('GET', url);
-  xhr.onreadystatechange = () => {
-    if(xhr.readyState === 4 && xhr.status === 200) {
-      const data = JSON.parse(xhr.responseText);
-      drawPolyLine(data);
-    }
-  }
-  xhr.send();
+function callMapObjApiAJAX(mapObj) {
+  fetch('/api/loadLane', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      mapObject: mapObj,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    drawPolyLine(data.data);
+  });
 }
