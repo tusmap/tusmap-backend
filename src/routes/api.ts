@@ -33,10 +33,10 @@ router
 })
 
 .post('/post', async (req: Request, res: Response) => {
-  fetch(req.body.url).then(res => res.json())
-  .then(data => {
-    res.json(data);
-  }).catch(err => res.json(err));
+  axios.get(req.body.url).then(data => {
+    console.log(data.data);
+    res.json(data.data);
+  });
 });
 
 export default router;
