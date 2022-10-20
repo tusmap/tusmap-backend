@@ -32,4 +32,11 @@ router
   });
 })
 
+.get('/post', async (req: Request, res: Response) => {
+  fetch(req.body.url).then(res => res.json())
+  .then(data => {
+    res.json(data);
+  }).catch(err => res.json(err));
+});
+
 export default router;
