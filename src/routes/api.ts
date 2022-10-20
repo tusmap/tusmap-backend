@@ -32,7 +32,7 @@ router
   });
 })
 
-.get('/post', async (req: Request, res: Response) => {
+.post('/post', async (req: Request, res: Response) => {
   fetch(req.body.url).then(res => res.json())
   .then(data => {
     res.json(data);
